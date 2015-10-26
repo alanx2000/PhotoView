@@ -215,7 +215,7 @@ public class PhotoView extends ImageView implements IPhotoView {
     }
 
     @Override
-    public void setOnLongClickListener(OnLongClickListener l) {
+    public void setOnLongClickListener(OnPhotoTapListener l) {
         mAttacher.setOnLongClickListener(l);
     }
 

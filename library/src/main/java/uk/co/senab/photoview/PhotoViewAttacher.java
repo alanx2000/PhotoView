@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011, 2012 Chris Banes.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -138,7 +138,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private OnMatrixChangedListener mMatrixChangeListener;
     private OnPhotoTapListener mPhotoTapListener;
     private OnViewTapListener mViewTapListener;
-    private OnLongClickListener mLongClickListener;
+    private OnPhotoTapListener mLongClickListener;
     private OnScaleChangeListener mScaleChangeListener;
 
     private int mIvTop, mIvRight, mIvBottom, mIvLeft;
@@ -179,7 +179,22 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                     @Override
                     public void onLongPress(MotionEvent e) {
                         if (null != mLongClickListener) {
-                            mLongClickListener.onLongClick(getImageView());
+                            final RectF displayRect = getDisplayRect();
+
+                            if (null != displayRect) {
+                                final float x = e.getX(), y = e.getY();
+
+                                // Check to see if the user tapped on the photo
+                                if (displayRect.contains(x, y)) {
+
+                                    float xResult = (x - displayRect.left)
+                                            / displayRect.width();
+                                    float yResult = (y - displayRect.top)
+                                            / displayRect.height();
+
+                                    mLongClickListener.onPhotoTap(getImageView(), xResult, yResult);
+                                }
+                            }
                         }
                     }
                 });
@@ -245,6 +260,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         mMatrixChangeListener = null;
         mPhotoTapListener = null;
         mViewTapListener = null;
+        mLongClickListener = null;
 
         // Finally, clear ImageView
         mImageView = null;
@@ -574,7 +590,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     @Override
-    public void setOnLongClickListener(OnLongClickListener listener) {
+    public void setOnLongClickListener(OnPhotoTapListener listener) {
         mLongClickListener = listener;
     }
 

@@ -70,6 +70,7 @@ public class SimpleSampleActivity extends AppCompatActivity {
         // Lets attach some listeners, not required though!
         mAttacher.setOnMatrixChangeListener(new MatrixChangeListener());
         mAttacher.setOnPhotoTapListener(new PhotoTapListener());
+        mAttacher.setOnLongClickListener(new PhotoTapListener());
     }
 
     @Override

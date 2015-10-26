@@ -203,7 +203,7 @@ public interface IPhotoView {
      *
      * @param listener - Listener to be registered.
      */
-    void setOnLongClickListener(View.OnLongClickListener listener);
+    void setOnLongClickListener(PhotoViewAttacher.OnPhotoTapListener listener);
 
     /**
      * Register a callback to be invoked when the Matrix has changed for this View. An example would
